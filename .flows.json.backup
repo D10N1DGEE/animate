@@ -1,0 +1,1712 @@
+[
+    {
+        "id": "8899a56b32c4a1b3",
+        "type": "tab",
+        "label": "routing",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b9902178314de195",
+        "type": "tab",
+        "label": "main menu",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b771cbd343313bfe",
+        "type": "subflow",
+        "name": "get anc token",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 140,
+                "y": 160,
+                "wires": [
+                    {
+                        "id": "8374b9af688fd97a"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 2160,
+                "y": 140,
+                "wires": [
+                    {
+                        "id": "4b7a8dcf7b39a934",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1920,
+                "y": 260,
+                "wires": [
+                    {
+                        "id": "39011708e74c802c",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#E6E0F8"
+    },
+    {
+        "id": "805b6f6c.c5941",
+        "type": "subflow",
+        "name": "APILogs",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 300,
+                "wires": [
+                    {
+                        "id": "ff9fc6b7.6046d8"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 1507,
+                "y": 260,
+                "wires": [
+                    {
+                        "id": "a8aa10e8.2e81f",
+                        "port": 0
+                    }
+                ]
+            },
+            {
+                "x": 1507,
+                "y": 320,
+                "wires": [
+                    {
+                        "id": "a48e2bb.eff5cd8",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#C0DEED"
+    },
+    {
+        "id": "2ea8e1e541eaafdf",
+        "type": "dialogflowv2-token",
+        "name": "animate-bot"
+    },
+    {
+        "id": "588e0b5cc4369262",
+        "type": "function",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "func": "msg.service = \"ancAPI\"\n\nmsg.method = \"POST\"\nmsg.url = `${msg.aptekiancApiUrl}/rest-apis/oauth/token`;\nmsg.headers = {\n    'authorization': `Basic ${msg.aptekiancApiToken}`,\n    'Content-Type': 'application/x-www-form-urlencoded'\n}\n\nmsg.payload = {\n    \"username\": \"telegramBotUser\",\n    \"password\": \"b3lGgSX6YeRdt1rszIJuBlLTsKf2eSOg\",\n    \"grant_type\": \"password\",\n    \"scope\": \"webapp\"\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 160,
+        "wires": [
+            [
+                "ec179e63bb82aa5f"
+            ]
+        ]
+    },
+    {
+        "id": "ec179e63bb82aa5f",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "env": [],
+        "x": 660,
+        "y": 160,
+        "wires": [
+            [
+                "c330d5f50eb3875a"
+            ],
+            [
+                "39011708e74c802c"
+            ]
+        ]
+    },
+    {
+        "id": "c330d5f50eb3875a",
+        "type": "function",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "func": "msg.service = \"ancAPI\"\n\nmsg.method = \"POST\"\nmsg.url = `${msg.aptekiancApiUrl}/authorization/token/generate`;\nmsg.headers = {\n    authorization: `Bearer ${msg.payload.access_token}`\n}\n\nmsg.payload = {\n    \"phone\": msg.phone\n}\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 160,
+        "wires": [
+            [
+                "88e4af842695e2c3",
+                "8e055116b7bbc2cb"
+            ]
+        ]
+    },
+    {
+        "id": "88e4af842695e2c3",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "env": [],
+        "x": 980,
+        "y": 160,
+        "wires": [
+            [
+                "4ab02eb9966eb3d3",
+                "5dcbfc32eec38762"
+            ],
+            [
+                "39011708e74c802c",
+                "08553b56ad48f795"
+            ]
+        ]
+    },
+    {
+        "id": "8374b9af688fd97a",
+        "type": "change",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "old_payload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 310,
+        "y": 160,
+        "wires": [
+            [
+                "588e0b5cc4369262"
+            ]
+        ]
+    },
+    {
+        "id": "4ab02eb9966eb3d3",
+        "type": "change",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ancCartApiToken",
+                "pt": "msg",
+                "to": "payload.token",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1190,
+        "y": 160,
+        "wires": [
+            [
+                "85f1ef16390f1851",
+                "c838552f1e6decbf"
+            ]
+        ]
+    },
+    {
+        "id": "85f1ef16390f1851",
+        "type": "debug",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "ancCartApiToken",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1480,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "c838552f1e6decbf",
+        "type": "function",
+        "z": "b771cbd343313bfe",
+        "name": "save to settings",
+        "func": "\nmsg.service = \"CustomerAPI\"\n\nmsg.method = \"POST\"\nmsg.url = msg.customerApiUrl + \"/settings\";\nmsg.headers = {\n    authorization: msg.customerApiKey,\n    'x-trace-id': msg.traceID,\n    'x-user-id': msg.userID\n}\n\nmsg.payload = {\n    \"ancCartApiToken\": msg.ancCartApiToken\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1460,
+        "y": 160,
+        "wires": [
+            [
+                "fec88c0351983eee"
+            ]
+        ]
+    },
+    {
+        "id": "fec88c0351983eee",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "x": 1640,
+        "y": 160,
+        "wires": [
+            [
+                "8f581ab9b405ec16"
+            ],
+            [
+                "39011708e74c802c"
+            ]
+        ]
+    },
+    {
+        "id": "4b7a8dcf7b39a934",
+        "type": "change",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "old_payload",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "old_payload",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2040,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "39011708e74c802c",
+        "type": "change",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "old_payload",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "old_payload",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1780,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8f581ab9b405ec16",
+        "type": "function",
+        "z": "b771cbd343313bfe",
+        "name": "",
+        "func": "if (msg.payload.settings) {\n    msg.customerSettings = typeof msg.payload.settings === \"string\" ? JSON.parse(msg.payload.settings) : msg.payload.settings\n} else {\n    msg.customerSettings = typeof msg.customerSettings === \"string\" ? JSON.parse(msg.customerSettings) : msg.customerSettings\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1830,
+        "y": 140,
+        "wires": [
+            [
+                "4b7a8dcf7b39a934"
+            ]
+        ]
+    },
+    {
+        "id": "8e055116b7bbc2cb",
+        "type": "debug",
+        "z": "b771cbd343313bfe",
+        "name": "debug 66",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.access_token",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "5dcbfc32eec38762",
+        "type": "debug",
+        "z": "b771cbd343313bfe",
+        "name": "debug 67",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "08553b56ad48f795",
+        "type": "debug",
+        "z": "b771cbd343313bfe",
+        "name": "debug 68",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "f112583f.dbbbd8",
+        "type": "http request",
+        "z": "805b6f6c.c5941",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 450,
+        "y": 300,
+        "wires": [
+            [
+                "8e162ca9.75bc1"
+            ]
+        ]
+    },
+    {
+        "id": "8e162ca9.75bc1",
+        "type": "switch",
+        "z": "805b6f6c.c5941",
+        "name": "statusCode",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "200",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 623,
+        "y": 300,
+        "wires": [
+            [
+                "dd46cd44.a7c61"
+            ],
+            [
+                "80ee4a39.2c67d8"
+            ]
+        ]
+    },
+    {
+        "id": "dd46cd44.a7c61",
+        "type": "function",
+        "z": "805b6f6c.c5941",
+        "name": "stringifyResponse",
+        "func": "let response = typeof msg.payload\nif (response == \"string\"){\nmsg.response = msg.payload\nmsg.payload = {}\n} else {\n  msg.response = JSON.stringify(msg.payload)\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 950,
+        "y": 260,
+        "wires": [
+            [
+                "41fe6226.1b563c"
+            ]
+        ]
+    },
+    {
+        "id": "41fe6226.1b563c",
+        "type": "change",
+        "z": "805b6f6c.c5941",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "Log.level",
+                "pt": "msg",
+                "to": "info",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "Log._application",
+                "pt": "msg",
+                "to": "NodeRedWA",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "Log.stage",
+                "pt": "msg",
+                "to": "stage",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.userID",
+                "pt": "msg",
+                "to": "userID",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.traceID",
+                "pt": "msg",
+                "to": "traceID",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.statusCode",
+                "pt": "msg",
+                "to": "statusCode",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.outUrl",
+                "pt": "msg",
+                "to": "url",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.request",
+                "pt": "msg",
+                "to": "request",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.response",
+                "pt": "msg",
+                "to": "response",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 260,
+        "wires": [
+            [
+                "a8aa10e8.2e81f"
+            ]
+        ]
+    },
+    {
+        "id": "80ee4a39.2c67d8",
+        "type": "function",
+        "z": "805b6f6c.c5941",
+        "name": "stringifyResponse",
+        "func": "let response = typeof msg.payload\nif (response == \"string\"){\nmsg.response = msg.payload\nmsg.payload = {}\n} else {\n  msg.response = JSON.stringify(msg.payload)\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 950,
+        "y": 320,
+        "wires": [
+            [
+                "24de2dcc.77ecc2"
+            ]
+        ]
+    },
+    {
+        "id": "24de2dcc.77ecc2",
+        "type": "change",
+        "z": "805b6f6c.c5941",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "Log.level",
+                "pt": "msg",
+                "to": "error",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "Log._application",
+                "pt": "msg",
+                "to": "NodeRedWA",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "Log.stage",
+                "pt": "msg",
+                "to": "stage",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.userID",
+                "pt": "msg",
+                "to": "userID",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.traceID",
+                "pt": "msg",
+                "to": "traceID",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.statusCode",
+                "pt": "msg",
+                "to": "statusCode",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.errorCode",
+                "pt": "msg",
+                "to": "payload.code",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.outUrl",
+                "pt": "msg",
+                "to": "url",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.request",
+                "pt": "msg",
+                "to": "request",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "Log.response",
+                "pt": "msg",
+                "to": "response",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 320,
+        "wires": [
+            [
+                "a48e2bb.eff5cd8"
+            ]
+        ]
+    },
+    {
+        "id": "ff9fc6b7.6046d8",
+        "type": "change",
+        "z": "805b6f6c.c5941",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "request.method",
+                "pt": "msg",
+                "to": "method",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "request.receiver",
+                "pt": "msg",
+                "to": "chatId",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "request.lang",
+                "pt": "msg",
+                "to": "lang",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "request.state",
+                "pt": "msg",
+                "to": "state",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "request.body",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "service",
+                "pt": "msg",
+                "to": "service",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 253,
+        "y": 300,
+        "wires": [
+            [
+                "f112583f.dbbbd8"
+            ]
+        ]
+    },
+    {
+        "id": "a8aa10e8.2e81f",
+        "type": "function",
+        "z": "805b6f6c.c5941",
+        "name": "logSuccessful",
+        "func": "msg.Log.request = JSON.stringify(msg.Log.request)\nmsg.Log.timestamp = new Date()\n\nnode.log(msg.Log);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 1360,
+        "y": 260,
+        "wires": [
+            [
+                "fc07e8a3dac17dbf"
+            ]
+        ]
+    },
+    {
+        "id": "a48e2bb.eff5cd8",
+        "type": "function",
+        "z": "805b6f6c.c5941",
+        "name": "logUnsuccessful",
+        "func": "msg.Log.timestamp = new Date()\nmsg.Log.request = JSON.stringify(msg.Log.request)\n\nnode.error(msg.Log);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 320,
+        "wires": [
+            [
+                "fc07e8a3dac17dbf"
+            ]
+        ]
+    },
+    {
+        "id": "fc07e8a3dac17dbf",
+        "type": "debug",
+        "z": "805b6f6c.c5941",
+        "name": "APILogs",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "Log",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1620,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1dc24930a223dd1b",
+        "type": "http in",
+        "z": "8899a56b32c4a1b3",
+        "name": "",
+        "url": "/webhook",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 160,
+        "wires": [
+            [
+                "656c1271d60ca75d",
+                "d999255f.de65b8",
+                "7dcadfc24c3d9ae6"
+            ]
+        ]
+    },
+    {
+        "id": "d999255f.de65b8",
+        "type": "debug",
+        "z": "8899a56b32c4a1b3",
+        "name": "telegram hook",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "872be8b8.1d2408",
+        "type": "http response",
+        "z": "8899a56b32c4a1b3",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 520,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8e600a81.fab8b8",
+        "type": "switch",
+        "z": "8899a56b32c4a1b3",
+        "name": "start",
+        "property": "text",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/start",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "mainMenuBack",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "mainMenu",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "question",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 5,
+        "x": 870,
+        "y": 160,
+        "wires": [
+            [
+                "2c52e91e.62e136"
+            ],
+            [
+                "9269ce350998e855"
+            ],
+            [
+                "149ad6f9c2a53b36"
+            ],
+            [
+                "2e80f30bf48f504a"
+            ],
+            [
+                "b10b7d9dfbf8e0dd"
+            ]
+        ]
+    },
+    {
+        "id": "9ec19f6f.c9502",
+        "type": "comment",
+        "z": "8899a56b32c4a1b3",
+        "name": "Команди Бота",
+        "info": "",
+        "x": 880,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2c52e91e.62e136",
+        "type": "link out",
+        "z": "8899a56b32c4a1b3",
+        "name": "onboarding",
+        "mode": "link",
+        "links": [
+            "aee451994f17b744",
+            "9301b107cf23b251"
+        ],
+        "x": 1070,
+        "y": 100,
+        "wires": [],
+        "l": true
+    },
+    {
+        "id": "656c1271d60ca75d",
+        "type": "change",
+        "z": "8899a56b32c4a1b3",
+        "name": "ok",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "ok",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 370,
+        "y": 80,
+        "wires": [
+            [
+                "872be8b8.1d2408"
+            ]
+        ]
+    },
+    {
+        "id": "e0072c8fd297ee84",
+        "type": "debug",
+        "z": "8899a56b32c4a1b3",
+        "name": "env",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9de635893dcdf608",
+        "type": "function",
+        "z": "8899a56b32c4a1b3",
+        "name": "env",
+        "func": "msg.lang = \"uk\";\nmsg.apiVersion = \"v1\";\n\nmsg.token = env.get(\"TG_TOKEN\");\nmsg.stage = env.get(\"NODE_ENV\");\nmsg.projectID = env.get(\"projectID\");\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 160,
+        "wires": [
+            [
+                "e0072c8fd297ee84",
+                "8e600a81.fab8b8"
+            ]
+        ]
+    },
+    {
+        "id": "7dcadfc24c3d9ae6",
+        "type": "change",
+        "z": "8899a56b32c4a1b3",
+        "name": "global_var",
+        "rules": [
+            {
+                "t": "set",
+                "p": "text",
+                "pt": "msg",
+                "to": "payload.message.text",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "text",
+                "pt": "msg",
+                "to": "payload.callback_query.data",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "chatId",
+                "pt": "msg",
+                "to": "payload.message.chat.id",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "chatId",
+                "pt": "msg",
+                "to": "payload.callback_query.message.chat.id",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 160,
+        "wires": [
+            [
+                "9de635893dcdf608"
+            ]
+        ]
+    },
+    {
+        "id": "2e80f30bf48f504a",
+        "type": "link out",
+        "z": "8899a56b32c4a1b3",
+        "name": "question",
+        "mode": "link",
+        "links": [
+            "1f2fe80d1db68e06"
+        ],
+        "x": 1060,
+        "y": 240,
+        "wires": [],
+        "l": true
+    },
+    {
+        "id": "b10b7d9dfbf8e0dd",
+        "type": "link out",
+        "z": "8899a56b32c4a1b3",
+        "name": "dialogFlow",
+        "mode": "link",
+        "links": [
+            "33429519ce9454c1"
+        ],
+        "x": 1070,
+        "y": 280,
+        "wires": [],
+        "l": true
+    },
+    {
+        "id": "9269ce350998e855",
+        "type": "link out",
+        "z": "8899a56b32c4a1b3",
+        "name": "mainMenuBack",
+        "mode": "link",
+        "links": [
+            "176bb4348f84fe64"
+        ],
+        "x": 1080,
+        "y": 140,
+        "wires": [],
+        "l": true
+    },
+    {
+        "id": "149ad6f9c2a53b36",
+        "type": "link out",
+        "z": "8899a56b32c4a1b3",
+        "name": "mainMenu",
+        "mode": "link",
+        "links": [
+            "bc8bfe562c2a8f3a"
+        ],
+        "x": 1070,
+        "y": 180,
+        "wires": [],
+        "l": true
+    },
+    {
+        "id": "aee451994f17b744",
+        "type": "link in",
+        "z": "b9902178314de195",
+        "name": "link in 1",
+        "links": [
+            "2c52e91e.62e136",
+            "6c3860adeb401059"
+        ],
+        "x": 145,
+        "y": 100,
+        "wires": [
+            [
+                "4d2a79179a782e42"
+            ]
+        ]
+    },
+    {
+        "id": "2f8c57145e8d8021",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"text\": \"Привіт! Я чат-бот, створений для того, щоб відповідати на різноманітні твої питання стосовно послуг у інстаграм-магазині: animate.posters.ua\\nМожеш обирати з поміж кнопочок нижче, що саме тебе цікавить👇\",\n  \"reply_markup\": {\n    \"inline_keyboard\": [\n      [\n        {\n          \"text\": \"Instagram🌐\",\n          \"url\": \"https://instagram.com/animate.posters.ua?igshid=YmMyMTA2M2Y=\"\n        }\n      ],\n      [\n        {\n          \"text\": \"Задати питанняℹ️\",\n          \"callback_data\": \"question\"\n        }\n      ],\n      [\n        {\n          \"text\": \"Оформити замовлення📝\",\n          \"url\": \"https://instagram.com/animate.posters.ua?igshid=YmMyMTA2M2Y=\"\n        }\n      ]\n    ],\n  }\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 100,
+        "wires": [
+            [
+                "8de69099f2886c52"
+            ]
+        ]
+    },
+    {
+        "id": "8de69099f2886c52",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 880,
+        "y": 100,
+        "wires": [
+            [
+                "7dea142bdc7cf0cf"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7dea142bdc7cf0cf",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 69",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "1f2fe80d1db68e06",
+        "type": "link in",
+        "z": "b9902178314de195",
+        "name": "link in 2",
+        "links": [
+            "2e80f30bf48f504a"
+        ],
+        "x": 155,
+        "y": 440,
+        "wires": [
+            [
+                "108c024a473595c4"
+            ]
+        ]
+    },
+    {
+        "id": "108c024a473595c4",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"text\": \"З радістю відповім на твої запитання стосовно послуг у нашому магазині. Можеш їх писати в полі нижче👇\",\n  \"reply_markup\": {\n    \"inline_keyboard\": [\n      [\n        {\n          \"text\": \"Головне меню🏠\",\n          \"callback_data\": \"mainMenuBack\"\n        }\n      ]\n    ]\n}\n}\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 440,
+        "wires": [
+            [
+                "69d7d8e753f857b5"
+            ]
+        ]
+    },
+    {
+        "id": "69d7d8e753f857b5",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 490,
+        "y": 440,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "33429519ce9454c1",
+        "type": "link in",
+        "z": "b9902178314de195",
+        "name": "link in 3",
+        "links": [
+            "b10b7d9dfbf8e0dd"
+        ],
+        "x": 145,
+        "y": 580,
+        "wires": [
+            [
+                "27b4ec4b96a972e8"
+            ]
+        ]
+    },
+    {
+        "id": "216908a1126283a3",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"text\": msg.payload,\n  \"reply_markup\": {\n    \"inline_keyboard\": [\n      [\n        {\n          \"text\": \"Оформити замовлення📝\",\n          \"url\": \"https://instagram.com/animate.posters.ua?igshid=YmMyMTA2M2Y=\"\n        }\n      ],\n      [\n        {\n          \"text\": \"Головне меню🏠\",\n          \"callback_data\": \"mainMenu\"\n        }\n      ]\n    ],\n  }\n}\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1320,
+        "y": 640,
+        "wires": [
+            [
+                "7e64db8f42caeb5c"
+            ]
+        ]
+    },
+    {
+        "id": "7e64db8f42caeb5c",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 1510,
+        "y": 640,
+        "wires": [
+            [
+                "a44a6e51a3c333b9"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "05c1956777897799",
+        "type": "change",
+        "z": "b9902178314de195",
+        "name": "set response",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "_dialogflow.fulfillmentMessages[0].text.text[0]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 920,
+        "y": 580,
+        "wires": [
+            [
+                "f1e3d734cda21f0b",
+                "b62f114914d79f03"
+            ]
+        ]
+    },
+    {
+        "id": "f1e3d734cda21f0b",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 77",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "a44a6e51a3c333b9",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 78",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1510,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "36fc8a3cb3b3b9eb",
+        "type": "dialogflowv2",
+        "z": "b9902178314de195",
+        "dialogflow": "2ea8e1e541eaafdf",
+        "language": "uk",
+        "debug": false,
+        "queryParamsOK": false,
+        "x": 690,
+        "y": 580,
+        "wires": [
+            [
+                "5393b0f3dc1910a3",
+                "05c1956777897799"
+            ]
+        ]
+    },
+    {
+        "id": "27b4ec4b96a972e8",
+        "type": "change",
+        "z": "b9902178314de195",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "text",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 580,
+        "wires": [
+            [
+                "4ece473fd1562d81"
+            ]
+        ]
+    },
+    {
+        "id": "5393b0f3dc1910a3",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 79",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "4d2a79179a782e42",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"text\": \"✋\",\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 100,
+        "wires": [
+            [
+                "9328f368f889f347"
+            ]
+        ]
+    },
+    {
+        "id": "9328f368f889f347",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 500,
+        "y": 100,
+        "wires": [
+            [
+                "2f8c57145e8d8021",
+                "7d561fde4ffcd2f6"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "7d561fde4ffcd2f6",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 80",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "eb8c2a3a2a603a7a",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 500,
+        "y": 240,
+        "wires": [
+            [
+                "48a0237937c224b5"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "48a0237937c224b5",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 81",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "176bb4348f84fe64",
+        "type": "link in",
+        "z": "b9902178314de195",
+        "name": "link in 4",
+        "links": [
+            "9269ce350998e855",
+            "c41363f67a223d0f"
+        ],
+        "x": 145,
+        "y": 240,
+        "wires": [
+            [
+                "7242cb4e6ffc53ad"
+            ]
+        ]
+    },
+    {
+        "id": "8abd53b302ca12ad",
+        "type": "comment",
+        "z": "b9902178314de195",
+        "name": "/start",
+        "info": "",
+        "x": 170,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "a4a92d026658ef22",
+        "type": "comment",
+        "z": "b9902178314de195",
+        "name": "Головне меню",
+        "info": "",
+        "x": 200,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "30c71cda6f230f4e",
+        "type": "comment",
+        "z": "b9902178314de195",
+        "name": "задати питання",
+        "info": "",
+        "x": 210,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9ad523dd8e40cb08",
+        "type": "comment",
+        "z": "b9902178314de195",
+        "name": "DialogFlow",
+        "info": "",
+        "x": 180,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "4ece473fd1562d81",
+        "type": "switch",
+        "z": "b9902178314de195",
+        "name": "",
+        "property": "text",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 480,
+        "y": 580,
+        "wires": [
+            [
+                "36fc8a3cb3b3b9eb"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "44bb6d801a854cc1",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"text\": \"Обирай, з поміж кнопок нижче, що саме тебе цікавить👇\",\n  \"reply_markup\": {\n    \"inline_keyboard\": [\n      [\n        {\n          \"text\": \"Instagram🌐\",\n          \"url\": \"https://instagram.com/animate.posters.ua?igshid=YmMyMTA2M2Y=\"\n        }\n      ],\n      [\n        {\n          \"text\": \"Задати питанняℹ️\",\n          \"callback_data\": \"question\"\n        }\n      ],\n      [\n        {\n          \"text\": \"Оформити замовлення📝\",\n          \"url\": \"https://instagram.com/animate.posters.ua?igshid=YmMyMTA2M2Y=\"\n        }\n      ]\n    ],\n  }\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 320,
+        "wires": [
+            [
+                "2f5a8021dd374031"
+            ]
+        ]
+    },
+    {
+        "id": "7242cb4e6ffc53ad",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "deleteMessage",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/deleteMessage`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"message_id\": msg.payload.callback_query.message.message_id\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 240,
+        "wires": [
+            [
+                "eb8c2a3a2a603a7a"
+            ]
+        ]
+    },
+    {
+        "id": "2f5a8021dd374031",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 520,
+        "y": 320,
+        "wires": [
+            [
+                "050bf8178aaffb8e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "050bf8178aaffb8e",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 82",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "bc8bfe562c2a8f3a",
+        "type": "link in",
+        "z": "b9902178314de195",
+        "name": "link in 5",
+        "links": [
+            "149ad6f9c2a53b36"
+        ],
+        "x": 145,
+        "y": 320,
+        "wires": [
+            [
+                "44bb6d801a854cc1"
+            ]
+        ]
+    },
+    {
+        "id": "e91ff69d72474727",
+        "type": "function",
+        "z": "b9902178314de195",
+        "name": "sendPhoto",
+        "func": "msg.method = \"POST\";\nmsg.url = `https://api.telegram.org/bot${msg.token}/sendPhoto`;\n\nmsg.payload = {\n  \"chat_id\": msg.chatId,\n  \"photo\": \"https://prnt.sc/aCxThL7tF9mT\"\n}\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 520,
+        "wires": [
+            [
+                "3d41e4e2c165aa9a"
+            ]
+        ]
+    },
+    {
+        "id": "3d41e4e2c165aa9a",
+        "type": "subflow:805b6f6c.c5941",
+        "z": "b9902178314de195",
+        "name": "",
+        "x": 1490,
+        "y": 520,
+        "wires": [
+            [
+                "ac5e44c279c6278e"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "ac5e44c279c6278e",
+        "type": "debug",
+        "z": "b9902178314de195",
+        "name": "debug 83",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1620,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "b62f114914d79f03",
+        "type": "switch",
+        "z": "b9902178314de195",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "designs",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1130,
+        "y": 580,
+        "wires": [
+            [
+                "e91ff69d72474727"
+            ],
+            [
+                "216908a1126283a3"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,17 @@
+{
+    "name": "company-nodered-messanger",
+    "description": "A Node-RED Project",
+    "version": "0.2.4",
+    "private": true,
+    "dependencies": {
+        "@chatbots-studio/cbs-platform-node-red-palette": "1.17.2",
+        "@grpc/grpc-js": "1.8.12",
+        "dialogflow-full-nodered": "^1.0.10",
+        "grpc": "^1.24.11",
+        "moment": "^2.29.1",
+        "moment-timezone": "^0.5.32",
+        "node-red": "^3.0.0",
+        "node-red-contrib-cryptography": "0.0.4",
+        "node-red-debugger": "^1.1.1"
+    }
+}
